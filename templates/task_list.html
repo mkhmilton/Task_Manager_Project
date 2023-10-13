@@ -27,7 +27,9 @@
                     <td class="{% if task.due_date < today %}btn-danger{% elif task.due_date == today %}btn-warning{% else %}btn-info{% endif %}">
                         {{ task.due_date }}
                     </td>
-                    
+                    <td>
+                        <a href="{% url 'task-detail' task.id %}" class="btn btn-sm btn-info">View Details</a>
+                    </td>
                 </tr>
             {% endfor %}
         </tbody>
