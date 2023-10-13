@@ -70,6 +70,8 @@ def user_logout(request):
     logout(request)
     return redirect('login')  # Redirect to your login page
 
-
-
+@login_required(login_url='login')
+def task_detail(request, task_id):
+    task = get_object_or_404(Task, id=task_id, user=request.user)
+    return render(request, 'task_details.html', {'task': task})
 
