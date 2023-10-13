@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 from .forms import TaskForm
 from django.contrib.auth import logout
 from .models import*
+from django.shortcuts import get_object_or_404
 
 from django.utils import timezone
 from datetime import datetime
@@ -69,6 +70,19 @@ def task_list(request):
 def user_logout(request):
     logout(request)
     return redirect('login')  # Redirect to your login page
+
+@login_required(login_url='login')
+def edit_task(request, task_id):
+    task = get_object_or_404(Task, id=task_id)
+    if request.method == 'POST':
+        form = TaskForm(request.POST, instance=task)
+        if form.is_valid():
+            form.save()
+            return redirect('task-detail', task_id=task_id)
+    else:
+        form = TaskForm(instance=task)
+    return render(request, 'task_edit.html', {'form': form, 'task': task})
+
 
 @login_required(login_url='login')
 def task_detail(request, task_id):
